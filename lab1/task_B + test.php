@@ -82,17 +82,22 @@ foreach ($dat_files as $dat_file) {
                     $output[] = "OK";
                 }
                 break;
-            case 'N':
-                // Число: учитываем пределы
-                $min_value = intval($matches[3]);
-                $max_value = intval($matches[4]);
-                $number = intval($data);
-                if ($number < $min_value || $number > $max_value) {
-                    $output[] = "FAIL";
-                } else {
-                    $output[] = "OK";
-                }
-                break;
+                case 'N':
+                    // Число: учитываем пределы
+                    if (!preg_match('/^-?\d+$/', $data)) {
+                        $output[] = "FAIL";
+                    } else {
+                        $number = intval($data);
+                        $min_value = intval($matches[3]);
+                        $max_value = intval($matches[4]);
+                        if ($number < $min_value || $number > $max_value) {
+                            $output[] = "FAIL";
+                        } else {
+                            $output[] = "OK";
+                        }
+                    }
+                    break;
+                
             default:
                 // Неизвестный тип валидации
                 $output[] = "Unknown validation type";
