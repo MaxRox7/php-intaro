@@ -58,36 +58,46 @@ foreach ($dat_files as $dat_file) {
                     if (!preg_match('/^([0-2]?[0-9]|3[01])\.([0]?[1-9]|1[0-2])\.\d{4} ([01]?[0-9]|2[0-3]):([0-5][0-9])$/', $data)) {
                         $output[] = "FAIL";
                     } else {
-                        // Создаем объект DateTime
-                        $date = DateTime::createFromFormat($date_format, $data);
-                
-                        // Проверяем, была ли успешно создана дата
-                        if ($date instanceof DateTime) {
-                            $hour = intval($date->format('H'));
-                            $minute = intval($date->format('i'));
-                
-                            // Проверка диапазона значений часов и минут
-                            if ($hour >= 0 && $hour <= 23 && $minute >= 0 && $minute <= 59) {
-                                // Проверка на високосный год, если дата содержит 29 февраля
-                                $year = intval($date->format('Y'));
-                                $month = intval($date->format('m'));
-                                $day = intval($date->format('d'));
-                                if ($month == 2 && $day > 28 && !((($year % 4 == 0) && ($year % 100 != 0)) || ($year % 400 == 0))) {
-                                    $output[] = "FAIL"; // Неверная дата в невисокосном году
-                                    break;
-                                }
-                                
-                                
-                                // Если все проверки пройдены успешно
-                                $output[] = "OK";
-                            } else {
-                                $output[] = "FAIL"; // Неверный формат времени
-                            }
+                        // Разбиваем дату и время на компоненты
+                        $date_components = explode(' ', $data);
+                        $date_part = $date_components[0];
+                        $time_part = $date_components[1];
+                        
+                        // Разбиваем дату на компоненты
+                        $date_parts = explode('.', $date_part);
+                        $day = intval($date_parts[0]);
+                        $month = intval($date_parts[1]);
+                        $year = intval($date_parts[2]);
+                        
+                        // Проверяем, является ли год високосным
+                        $is_leap_year = ($year % 4 == 0 && ($year % 100 != 0 || $year % 400 == 0));
+                        
+                        // Проверяем, если дата 29 февраля в невисокосном году
+                        if ($day == 29 && $month == 2 && !$is_leap_year) {
+                            $output[] = "FAIL"; // Неверная дата в невисокосном году
                         } else {
-                            $output[] = "FAIL"; // Неверный формат даты и времени
+                            // Создаем объект DateTime
+                            $date = DateTime::createFromFormat($date_format, $data);
+                            
+                            // Проверяем, была ли успешно создана дата
+                            if ($date instanceof DateTime) {
+                                $hour = intval($date->format('H'));
+                                $minute = intval($date->format('i'));
+                                
+                                // Проверка диапазона значений часов и минут
+                                if ($hour >= 0 && $hour <= 23 && $minute >= 0 && $minute <= 59) {
+                                    // Если все проверки пройдены успешно
+                                    $output[] = "OK";
+                                } else {
+                                    $output[] = "FAIL"; // Неверный формат времени
+                                }
+                            } else {
+                                $output[] = "FAIL"; // Неверный формат даты и времени
+                            }
                         }
                     }
                     break;
+                
                 
                      
                 case 'E':
