@@ -52,16 +52,44 @@ foreach ($dat_files as $dat_file) {
                     $output[] = "OK";
                 }
                 break;
-            case 'D':
-                // Дата и время: d.m.Y H:i
-                $date_format = 'd.m.Y H:i';
-                $date = DateTime::createFromFormat($date_format, $data);
-                if (!$date || $date->format($date_format) !== $data) {
-                    $output[] = "FAIL";
-                } else {
-                    $output[] = "OK";
-                }
-                break;
+                case 'D':
+                    // Дата и время: d.m.Y H:i
+                    $date_format = 'd.m.Y H:i';
+                    if (!preg_match('/^([0-2]?[0-9]|3[01])\.([0]?[1-9]|1[0-2])\.\d{4} ([01]?[0-9]|2[0-3]):([0-5][0-9])$/', $data)) {
+                        $output[] = "FAIL";
+                    } else {
+                        // Создаем объект DateTime
+                        $date = DateTime::createFromFormat($date_format, $data);
+                
+                        // Проверяем, была ли успешно создана дата
+                        if ($date instanceof DateTime) {
+                            $hour = intval($date->format('H'));
+                            $minute = intval($date->format('i'));
+                
+                            // Проверка диапазона значений часов и минут
+                            if ($hour >= 0 && $hour <= 23 && $minute >= 0 && $minute <= 59) {
+                                // Проверка на високосный год, если дата содержит 29 февраля
+                                $year = intval($date->format('Y'));
+                                $month = intval($date->format('m'));
+                                $day = intval($date->format('d'));
+                                if ($month == 2 && $day > 28 && !((($year % 4 == 0) && ($year % 100 != 0)) || ($year % 400 == 0))) {
+                                    $output[] = "FAIL"; // Неверная дата в невисокосном году
+                                    break;
+                                }
+                                
+                                
+                                // Если все проверки пройдены успешно
+                                $output[] = "OK";
+                            } else {
+                                $output[] = "FAIL"; // Неверный формат времени
+                            }
+                        } else {
+                            $output[] = "FAIL"; // Неверный формат даты и времени
+                        }
+                    }
+                    break;
+                
+                     
                 case 'E':
                     // Электронная почта
                     if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_]{3,29}@[a-zA-Z]{2,30}\.[a-z]{2,10}$/', $data)) {
@@ -77,27 +105,28 @@ foreach ($dat_files as $dat_file) {
                 $max_length = intval($matches[4]);
                 $data_length = strlen($data);
                 if ($data_length < $min_length || $data_length > $max_length) {
+                    
                     $output[] = "FAIL";
                 } else {
                     $output[] = "OK";
                 }
                 break;
-                case 'N':
-                    // Число: учитываем пределы
-                    if (!preg_match('/^-?\d+$/', $data)) {
-                        $output[] = "FAIL";
-                    } else {
-                        $number = intval($data);
-                        $min_value = intval($matches[3]);
-                        $max_value = intval($matches[4]);
-                        if ($number < $min_value || $number > $max_value) {
-                            $output[] = "FAIL";
-                        } else {
-                            $output[] = "OK";
-                        }
-                    }
-                    break;
-                
+            case 'N':
+    // Число: учитываем пределы
+    if (!preg_match('/^-?\d+$/', $data)) {
+        $output[] = "FAIL";
+    } else {
+        $number = intval($data);
+        $min_value = intval($matches[3]);
+        $max_value = intval($matches[4]);
+        if ($number < $min_value || $number > $max_value) {
+            $output[] = "FAIL";
+        } else {
+            $output[] = "OK";
+        }
+    }
+    break;
+
             default:
                 // Неизвестный тип валидации
                 $output[] = "Unknown validation type";
