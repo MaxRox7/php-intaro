@@ -62,14 +62,15 @@ foreach ($dat_files as $dat_file) {
                     $output[] = "OK";
                 }
                 break;
-            case 'E':
-                // Электронная почта
-                if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_]{3,29}@[a-zA-Z]{2,30}\.[a-zA-Z]{2,10}$/', $data)) {
-                    $output[] = "FAIL";
-                } else {
-                    $output[] = "OK";
-                }
-                break;
+                case 'E':
+                    // Электронная почта
+                    if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_]{3,29}@[a-zA-Z]{2,30}\.[a-z]{2,10}$/', $data)) {
+                        $output[] = "FAIL";
+                    } else {
+                        $output[] = "OK";
+                    }
+                    break;
+                
             case 'S':
                 // Строка: учитываем длину
                 $min_length = intval($matches[3]);
