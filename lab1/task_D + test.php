@@ -2,34 +2,35 @@
 
 // Функция для поиска кратчайшего пути в графе с помощью алгоритма Дейкстры
 function dijkstra($graph, $source, $destination) {
-    $INF = PHP_INT_MAX;
     $n = count($graph);
+    $distances = array_fill(0, $n, PHP_INT_MAX);
     $visited = array_fill(0, $n, false);
-    $distances = array_fill(0, $n, $INF);
+    
     $distances[$source] = 0;
     
-    for ($i = 0; $i < $n - 1; $i++) {
-        $minDist = $INF;
+    for ($count = 0; $count < $n - 1; $count++) {
+        $minDist = PHP_INT_MAX;
         $minIndex = -1;
         
-        for ($j = 0; $j < $n; $j++) {
-            if (!$visited[$j] && $distances[$j] < $minDist) {
-                $minDist = $distances[$j];
-                $minIndex = $j;
+        for ($i = 0; $i < $n; $i++) {
+            if (!$visited[$i] && $distances[$i] <= $minDist) {
+                $minDist = $distances[$i];
+                $minIndex = $i;
             }
         }
         
         $visited[$minIndex] = true;
         
-        for ($j = 0; $j < $n; $j++) {
-            if (!$visited[$j] && $graph[$minIndex][$j] && $distances[$minIndex] != $INF && $distances[$minIndex] + $graph[$minIndex][$j] < $distances[$j]) {
-                $distances[$j] = $distances[$minIndex] + $graph[$minIndex][$j];
+        for ($i = 0; $i < $n; $i++) {
+            if (!$visited[$i] && $graph[$minIndex][$i] && $distances[$minIndex] != PHP_INT_MAX && $distances[$minIndex] + $graph[$minIndex][$i] < $distances[$i]) {
+                $distances[$i] = $distances[$minIndex] + $graph[$minIndex][$i];
             }
         }
     }
     
-    return ($distances[$destination] == $INF) ? -1 : $distances[$destination];
+    return ($distances[$destination] == PHP_INT_MAX) ? -1 : $distances[$destination];
 }
+
 
 // Функция для обработки запросов
 function processQueries($graph, $queries) {
@@ -97,7 +98,7 @@ function run_test($test_name) {
 
 
 // Запуск тестов
-for ($i = 1; $i <= 8; $i++) {
+for ($i = 1; $i <= 9; $i++) {
     $test_name = sprintf("D\\%03d", $i);
     run_test($test_name);
 }
