@@ -52,28 +52,54 @@ function processQueries($graph, $queries) {
     return $results;
 }
 
-// Чтение входных данных
-$stdin = fopen('tests/D/005.dat', 'r');
-list($n, $m) = array_map('intval', explode(' ', trim(fgets($stdin))));
-$graph = array_fill(0, $n, array_fill(0, $n, 0));
+function run_test($test_name) {
+    // Путь к файлу с данными
+    $stdin = fopen("tests\\$test_name.dat", 'r');
+    // Путь к файлу с ожидаемым результатом
+    $expected_result_file = "tests\\$test_name.ans";
 
-for ($i = 0; $i < $m; $i++) {
-    list($ai, $bi, $wi) = array_map('intval', explode(' ', trim(fgets($stdin))));
-    $graph[$ai][$bi] = $wi;
-    $graph[$bi][$ai] = $wi;
+    // Чтение файла с ожидаемым результатом
+    $expected_results = file($expected_result_file, FILE_IGNORE_NEW_LINES);
+
+    // Чтение входных данных
+    list($n, $m) = array_map('intval', explode(' ', trim(fgets($stdin))));
+    $graph = array_fill(0, $n, array_fill(0, $n, 0));
+
+    for ($i = 0; $i < $m; $i++) {
+        list($ai, $bi, $wi) = array_map('intval', explode(' ', trim(fgets($stdin))));
+        $graph[$ai][$bi] = $wi;
+        $graph[$bi][$ai] = $wi;
+    }
+
+    $k = intval(trim(fgets($stdin)));
+    $queries = [];
+    for ($i = 0; $i < $k; $i++) {
+        $queries[] = array_map('trim', explode(' ', fgets($stdin)));
+    }
+
+    // Закрытие файла
+    fclose($stdin);
+
+    // Обработка запросов и вывод результатов
+    $results = processQueries($graph, $queries);
+    $passed = true;
+    foreach ($results as $index => $result) {
+        if ($result != $expected_results[$index]) {
+            $passed = false;
+            echo "Test $test_name failed! Query index: $index, Expected: {$expected_results[$index]}, Actual: $result\n";
+        }
+    }
+
+    if ($passed) {
+        echo "Test $test_name passed!\n";
+    }
 }
 
-$k = intval(trim(fgets($stdin)));
-$queries = [];
-for ($i = 0; $i < $k; $i++) {
-    $queries[] = array_map('trim', explode(' ', fgets($stdin)));
+
+// Запуск тестов
+for ($i = 1; $i <= 8; $i++) {
+    $test_name = sprintf("D\\%03d", $i);
+    run_test($test_name);
 }
 
-// Обработка запросов и вывод результатов
-$results = processQueries($graph, $queries);
-foreach ($results as $result) {
-    echo $result . PHP_EOL;
-}
-
-fclose($stdin);
 ?>
