@@ -54,9 +54,9 @@ function processQueries($graph, $queries) {
 }
 
 function run_test($test_name) {
-    // Путь к файлу с данными
+  
     $stdin = fopen("tests\\$test_name.dat", 'r');
-    // Путь к файлу с ожидаемым результатом
+  
     $expected_result_file = "tests\\$test_name.ans";
 
     // Чтение файла с ожидаемым результатом
@@ -78,10 +78,10 @@ function run_test($test_name) {
         $queries[] = array_map('trim', explode(' ', fgets($stdin)));
     }
 
-    // Закрытие файла
+  
     fclose($stdin);
 
-    // Обработка запросов и вывод результатов
+  
     $results = processQueries($graph, $queries);
     $passed = true;
     foreach ($results as $index => $result) {
@@ -97,7 +97,7 @@ function run_test($test_name) {
 }
 
 
-// Запуск тестов
+
 for ($i = 1; $i <= 9; $i++) {
     $test_name = sprintf("D\\%03d", $i);
     run_test($test_name);

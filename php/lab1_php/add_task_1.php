@@ -10,7 +10,7 @@ function doubleNumbersInQuotes($string) {
 }
 
 // Пример использования
-$string = "2aaa'3'bbb'4'";
+$string = "'2''aaa'33'bbb'4'";
 $result = doubleNumbersInQuotes($string);
 echo $result; 
 ?>

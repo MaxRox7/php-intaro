@@ -8,41 +8,41 @@ foreach ($dat_files as $dat_file) {
     // Открываем .dat файл для чтения
     $file = fopen($dat_file, "r");
 
-    // Проверка на успешное открытие файла
+   
     if ($file === false) {
         die("Unable to open file: $dat_file");
     }
 
-    // Выводим информацию о текущем тесте
+   
     echo "Running test for $dat_file:\n";
 
-    // Подготавливаем переменную для хранения фактического вывода
+   
     $output = [];
 
-    // Читаем файл .dat построчно
+   
     while (!feof($file)) {
-        // Получаем строку из файла
+      
         $line = trim(fgets($file));
 
-        // Если строка пустая, пропускаем её
+      
         if (empty($line)) {
             continue;
         }
 
-        // Разбиваем строку на части, используя регулярное выражение
+       
         preg_match('/<([^>]*)>\s*([PDENS])\s*(-?\d*)\s*(-?\d*)/', $line, $matches);
 
-        // Проверяем, были ли найдены совпадения
+      
         if (count($matches) < 2) {
             $output[] = "FAIL";
             continue;
         }
 
-        // Получаем данные в скобках и тип валидации
+     
         $data = $matches[1];
         $validation_type = $matches[2];
 
-        // Проверяем тип валидации и соответствующие данные
+      
         switch ($validation_type) {
             case 'P':
                 // Номер телефона: +7 (999) 999-99-99
@@ -76,7 +76,7 @@ foreach ($dat_files as $dat_file) {
                         if ($day == 29 && $month == 2 && !$is_leap_year) {
                             $output[] = "FAIL"; // Неверная дата в невисокосном году
                         } else {
-                            // Создаем объект DateTime
+                           
                             $date = DateTime::createFromFormat($date_format, $data);
                             
                             // Проверяем, была ли успешно создана дата
@@ -86,7 +86,7 @@ foreach ($dat_files as $dat_file) {
                                 
                                 // Проверка диапазона значений часов и минут
                                 if ($hour >= 0 && $hour <= 23 && $minute >= 0 && $minute <= 59) {
-                                    // Если все проверки пройдены успешно
+                                    
                                     $output[] = "OK";
                                 } else {
                                     $output[] = "FAIL"; // Неверный формат времени
@@ -101,7 +101,7 @@ foreach ($dat_files as $dat_file) {
                 
                      
                 case 'E':
-                    // Электронная почта
+                  
                     if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_]{3,29}@[a-zA-Z]{2,30}\.[a-z]{2,10}$/', $data)) {
                         $output[] = "FAIL";
                     } else {
@@ -110,7 +110,7 @@ foreach ($dat_files as $dat_file) {
                     break;
                 
             case 'S':
-                // Строка: учитываем длину
+           
                 $min_length = intval($matches[3]);
                 $max_length = intval($matches[4]);
                 $data_length = strlen($data);
@@ -138,13 +138,13 @@ foreach ($dat_files as $dat_file) {
     break;
 
             default:
-                // Неизвестный тип валидации
+               
                 $output[] = "Unknown validation type";
                 break;
         }
     }
 
-    // Закрываем файл .dat
+  
     fclose($file);
 
     // Формируем путь к соответствующему файлу .ans
@@ -162,7 +162,7 @@ foreach ($dat_files as $dat_file) {
         }
     }
 
-    // Выводим результат теста
+ 
     if ($test_passed) {
         echo "Test for $dat_file: PASSED\n";
     } else {
