@@ -1,6 +1,6 @@
 -- task 1
 -- 3
-INSERT INTO client(fn_client, number_client, id_user) values ('Болдырев Максим Романович', '9802695322', 4),
+INSERT INTO client(full_name_client, phone_client, id_user) values ('Болдырев Максим Романович', '9802695322', 4),
 ('Кретов Игорь Олегович', '9323255651', 13), ('Толстунов Владимир Дмитриевич', '9563735678', 14), 
 ('Данченко Александр Сергеевич', '9563796457', 15), ('Горшков Александр Эдуардович', '9345678673', 17)
 
@@ -11,10 +11,10 @@ SELECT * FROM client
 --Запрос получение информации об оборудовании конкретного клиента::
 
 
-SELECT client_equip.id_equip, client_equip.name_equip, client_equip.sn_equip, client_equip.description_equip, client.id_client, client.fn_client
-FROM client
-INNER JOIN client_equip ON client.id_client = client_equip.id_client
-ORDER BY client.id_client
+SELECT ce.name_equip, ce.serial_number_equip, ce.desc_equip, c.full_name_client
+FROM client_equipment ce
+JOIN client c ON ce.id_client = c.id_client;
+ORDER BY ce.id_client
 
 
 --6
