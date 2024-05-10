@@ -51,11 +51,12 @@ INSERT INTO enumerations VALUES ('Option1');
 
 INSERT INTO arrays VALUES ('{1, 2, 3}');
 
-INSERT INTO xml_json VALUES ('<data>example</data>', '{"key": "value"}');
+INSERT INTO xml_json VALUES ('<data>example</data>', '{"1": "BMW}');
 
 INSERT INTO composite_table VALUES (ROW(200, 'Помидоры'));
 
-INSERT INTO other_types VALUES (100.00, E'\\xDEADBEEF', POINT(1, 2), B'101010', '550e8400-e29b-41d4-a716-446655440000');
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+INSERT INTO other_types VALUES (100.00, E'\\xDEADBEEF', POINT(1, 2), B'101010', uuid_generate_v4());
 
 -- SELECT запросы
 SELECT * FROM standard_data_types WHERE numeric_column = 10;
@@ -64,7 +65,8 @@ SELECT * FROM enumerations WHERE enum_column = 'Option1';
 
 SELECT * FROM arrays WHERE integer_array_column @> ARRAY[2];
 
-SELECT * FROM xml_json WHERE (json_column ->> 'key') 
+SELECT * FROM xml_json WHERE json_column->>'1' = 'BMW' ;
+
 
 SELECT * FROM composite_table WHERE (compose).name = 'Помидоры'
 
