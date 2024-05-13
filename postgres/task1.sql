@@ -11,6 +11,7 @@ SELECT * FROM client
 --Запрос получение информации об оборудовании конкретного клиента::
 
 /*==============================================================*/
+/*==============================================================*/
 
 SELECT ce.name_equip, ce.serial_number_equip, ce.desc_equip, c.full_name_client, c.id_client
 FROM client_equipment ce
