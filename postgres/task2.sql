@@ -12,6 +12,7 @@ CREATE TABLE enumerations (
     enum_column enum_type
 );
 
+/*==============================================================*/
 --Массивы
 CREATE TABLE arrays (
     integer_array_column INTEGER[]
