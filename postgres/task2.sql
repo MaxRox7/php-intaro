@@ -11,7 +11,10 @@ CREATE TYPE enum_type AS ENUM ('Option1', 'Option2', 'Option3');
 CREATE TABLE enumerations (
     enum_column enum_type
 );
+/*==============================================================*/
 
+/*==============================================================*/
+/*==============================================================*/
 --Массивы
 CREATE TABLE arrays (
     integer_array_column INTEGER[]
