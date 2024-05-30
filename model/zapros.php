@@ -1,6 +1,6 @@
 <?php
 
-include '../core/dbh.php';
+require_once '../core/dbh.php';
 
 class zapros extends Dbh {
 
