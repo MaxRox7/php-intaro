@@ -1,4 +1,5 @@
 <?php
+
 require 'vendor/autoload.php';
 
 use Shuchkin\SimpleXLSX;
@@ -13,11 +14,12 @@ if ($xlsx) {
     if (isset($rows[1])) {
         // Обработка строк с 15 по 20
         for ($i = 14; $i <= 19; $i++) {
-            // Получаем значение из столбца B в указанной строке
+            // Получаем значение из столбцов B и C в указанной строке
             $columnB = $rows[$i][1] ?? null;
+            $columnC = $rows[$i][2] ?? null;
             
-            // Обрабатываем строку
-            processRow($columnB);
+            // Обрабатываем строку и проверяем правильные ответы
+            processRow($columnB, $columnC);
         }
     } else {
         echo "Во второй строке нет данных.\n";
@@ -27,7 +29,7 @@ if ($xlsx) {
 }
 
 // Функция для обработки строки
-function processRow($columnB) {
+function processRow($columnB, $columnC) {
     // Разбиваем поле на строки
     $fieldRows = explode("\n", $columnB);
     
@@ -59,11 +61,42 @@ function processRow($columnB) {
     // Выводим сумму всех чисел
     echo "Сумма всех чисел: $totalSum\n";
     
-    // Выводим доли каждого числа от общей суммы
+    // Проверяем правильные ответы из столбца C
+    $correctAnswers = explode("\n", $columnC);
+    $correctFractions = [];
+    
+    foreach ($correctAnswers as $correctAnswer) {
+        // Разбиваем строку на слово и правильную долю
+        $parts = explode(' ', $correctAnswer);
+        
+        // Проверяем, содержит ли строка хотя бы два элемента
+        if (count($parts) >= 2) {
+            // Получаем слово и правильную долю
+            $word = $parts[0];
+            $correctFraction = floatval($parts[1]);
+            
+            // Записываем правильную долю в массив
+            $correctFractions[$word] = $correctFraction;
+        }
+    }
+    
+    // Выводим доли каждого числа от общей суммы и проверяем их правильность с учетом погрешности
     foreach ($words as $word) {
         $number = $fractions[$word];
         $fraction = round($number / $totalSum, 6);
-        echo "Слово: $word, Число: $number, Доля: $fraction\n";
+        $correctFraction = $correctFractions[$word] ?? null;
+        
+        echo "Слово: $word, Число: $number, Доля: $fraction";
+        
+        if ($correctFraction !== null) {
+            if (abs($fraction - $correctFraction) <= 0.1) {
+                echo " - Правильно\n";
+            } else {
+                echo " - Неправильно, правильная доля: $correctFraction\n";
+            }
+        } else {
+            echo " - Нет правильного ответа\n";
+        }
     }
     
     echo "\n"; // Добавляем пустую строку для разделения результатов обработки разных строк
