@@ -4,14 +4,18 @@ require_once '../core/dbh.php';
 class SignUpAuth extends Dbh {
 
     public function checkUser($login, $password) {
-        $sql = 'SELECT * FROM users WHERE login_user = ? OR password_user = ?';
+        $sql = 'SELECT * FROM users WHERE login_user = ? AND password_user = ?';
+       
         $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$login, hash('sha256', $password)]);
+
         if (!$stmt) {
             header('Content-Type: application/json');
             echo json_encode(array('status' => 'error', 'message' => 'Ошибка подготовки запроса.'));
             exit();
         }
-        $stmt->execute([$login, $password]);
+       
+      
         $userlogin = $stmt->fetch();
         if ($userlogin) {
 
