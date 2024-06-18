@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Авторизация</title>
     <!-- Подключение Materialize CSS через CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Подключение стилей для персонализации -->
@@ -32,6 +32,16 @@
         .input-field input[type=password]:focus:not([readonly])+label {
             color: #2196f3;
         }
+        .btn-register {
+            margin-right: 10px;
+        }
+        .btn-registration {
+            margin-left: 10px;
+        }
+        .btn-registration {
+            margin-top: 10px;
+            margin-right: 30px;
+        }
     </style>
 </head>
 <body>
@@ -39,8 +49,8 @@
         <div class="row">
             <div class="col s12 m6 offset-m3">
                 <div class="card">
-                    <h3 class="center-align">Регистрация</h3>
-                    <form action="../core/reg.php" method="post">
+                    <h3 class="center-align">Авторизация</h3>
+                    <form action="core/auth.php" method="post">
                         <div class="input-field">
                             <input id="login" type="text" name="login" required>
                             <label for="login">Логин</label>
@@ -49,12 +59,10 @@
                             <input id="password" type="password" name="password" required>
                             <label for="password">Пароль</label>
                         </div>
-                        <div class="input-field">
-                            <input id="reg-confirm-password" type="password" name="reg-confirm-password" required>
-                            <label for="reg-confirm-password">Повторите пароль</label>
-                        </div>
                         <div class="input-field center-align">
-                            <button class="btn waves-effect waves-light" type="submit" name="submit-reg">Зарегистрироваться</button>
+                            <button class="btn waves-effect waves-light" type="submit" name="submit-auth">Войти</button>
+                            <a href="#" class="btn btn-register waves-effect waves-light">На главную</a>
+                            <a href="view/homepage.php" class="btn btn-registration waves-effect waves-light">Регистрация</a>
                         </div>
                     </form>
                 </div>
