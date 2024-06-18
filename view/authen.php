@@ -64,7 +64,7 @@
                         </div>
                         <div class="input-field center-align">
                             <button class="btn waves-effect waves-light" type="submit" name="submit-auth">Войти</button>
-                            <a href="#" class="btn btn-register waves-effect waves-light">На главную</a>
+                            <a href="view/books.php" class="btn btn-register waves-effect waves-light">На главную</a>
                             <a href="view/homepage.php" class="btn btn-registration waves-effect waves-light">Регистрация</a>
                         </div>
                     </form>
