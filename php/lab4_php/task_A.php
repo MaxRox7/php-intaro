@@ -54,11 +54,11 @@ if ($xlsx) {
 
             // Сравниваем ожидаемый вывод с фактическим
             if ($actual_output === $expected_output) {
-                echo "Тест для строки $i пройден: вывод соответствует данным из столбца C.\n";
+                echo "Строка $i: PASS.\n";
             } else {
-                echo "Тест для строки $i не пройден: вывод не соответствует данным из столбца C.\n";
-                echo "Ожидаемый вывод для строки" ."\n" . "$expected_output\n";
-                echo "Наш вывод для строки". "\n" . "$actual_output\n";
+                echo "Строка $i:  FAIL.\n";
+                echo "Ожидалось" ."\n" . "$expected_output\n";
+                echo "Получилось". "\n" . "$actual_output\n";
             }
         }
     } else {
