@@ -22,13 +22,14 @@ if(isset($_POST["submit-auth"])) {
     $userDataString = json_encode(array('status' => 'success', 'user' => "Красава"));
     header('Content-Type: application/json');
     echo $userDataString;
-    exit();
+   
+
+  
 } else {
     $errorDataString = json_encode(array('status' => 'error', 'message' => 'Форма не была отправлена корректно'));
     header('Content-Type: application/json');
     echo $errorDataString;
-    exit();
+  
 }
 ?>
 
-}

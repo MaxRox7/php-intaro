@@ -4,7 +4,7 @@ require_once '../core/dbh.php';
 class SignUp extends Dbh {
 
     protected function checkUser($login, $password) {
-        $sql = 'SELECT login_user FROM users WHERE login_user = ? OR password_user = ?';
+        $sql = 'SELECT login_user FROM users WHERE login_user = ? AND password_user = ?';
         $stmt = $this->connect()->prepare($sql);
         if (!$stmt) {
             header('Content-Type: application/json');
