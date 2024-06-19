@@ -15,26 +15,24 @@ class SignUpAuth extends Dbh {
             exit();
         }
        
-      
-        $userlogin = $stmt->fetch();
-        if ($userlogin) {
+        $user = $stmt->fetch(); // Извлекаем результат запроса
+
+        if ($user) {
             session_start();
-            $_SESSION['user'] = ['login' => $login , 'password' => $password];
-           
+            $_SESSION['user'] = [
+                'id_user' => $user['id_user'], // Сохраняем id_user в сессию
+                'login' => $login,
+                'password' => $password
+            ];
 
             header('Content-Type: application/json');
-            echo json_encode(array('status' => 'success', 'id_user' => $userlogin['id_user'])); 
+            echo json_encode(array('status' => 'success', 'id_user' => $user['id_user'])); 
             header('Location: ../view/books.php');
-            
+            exit(); // Важно завершить выполнение после редиректа
         } else {
-
             header('Content-Type: application/json');
             echo json_encode(array('status' => 'error', 'message' => 'Неверное имя пользователя или пароль.'));
-      
         }
-    
     }
-
-
-
 }
+?>

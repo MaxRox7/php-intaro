@@ -3,7 +3,7 @@ session_start();
 
 if (empty($_SESSION['user'])) {
 
-header('Location: /buba');
+header('Location: /lib');
 echo "Доступ запрещен";
 die;
 

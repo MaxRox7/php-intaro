@@ -6,7 +6,7 @@ class Zapros extends Dbh {
 
 public function getbooks() {
 
-    $sql = "SELECT book.photo_book, book.date_read, users.login_user
+    $sql = "SELECT book.photo_book, book.date_read, users.login_user, book.name_book, book.file_book, book.allow_download
     FROM book
     JOIN users ON book.id_user = users.id_user";
     $stmt = $this -> connect() -> query($sql);
