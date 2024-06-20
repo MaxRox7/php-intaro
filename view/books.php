@@ -2,6 +2,10 @@
 
 require_once '../core/books_show.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +13,7 @@ require_once '../core/books_show.php';
 <head>
     <meta charset="UTF-8">
     <title>Список книг</title>
-    <!-- Подключение Materialize CSS через CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!-- Подключение стилей для персонализации -->
     <style>
         body {
             display: flex;
@@ -36,7 +38,7 @@ require_once '../core/books_show.php';
         .content {
             width: 100%;
             max-width: 1200px;
-            padding-top: 80px; /* Отступ сверху для элементов в правом верхнем углу */
+            padding-top: 80px;
             padding-left: 10px;
             padding-right: 10px;
         }
@@ -46,7 +48,7 @@ require_once '../core/books_show.php';
             justify-content: center;
         }
         .card {
-            width: 280px; /* Уменьшенный размер карточки */
+            width: 280px;
             margin: 20px;
         }
         .card-image img {
@@ -92,8 +94,12 @@ require_once '../core/books_show.php';
                                 <?php if ($book['allow_download']): ?>
                                     <a href="<?php echo htmlspecialchars('../files/' . $book['file_book']); ?>" class="download-link">Скачать</a>
                                 <?php endif; ?>
-                                <?php if (isset($_SESSION['user'])): ?>
+                                <?php if (isset($_SESSION['user']['id_user'])): ?>
                                     <a href="#" class="edit-link">Редактировать</a>
+                                    <form action="../core/delete_book.php" method="post" style="display: inline;">
+                                            <input type="hidden" name="id_book" value="<?php echo htmlspecialchars($book['id_book']); ?>">
+                                            <button type="submit" name="submit-delete" class="btn red">Удалить</button>
+                                    </form>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -105,9 +111,7 @@ require_once '../core/books_show.php';
         </div>
     </div>
 
-    <!-- Подключение jQuery (необходимо для Materialize) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Подключение Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

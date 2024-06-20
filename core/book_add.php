@@ -48,8 +48,10 @@ if ($file_book['error'] === UPLOAD_ERR_OK) {
 $addBook = new AddBook();
 $addBook->adding($id_user, $photo_book_db, $date_read, $allow_download, $file_book_db, $name_book);
 
-echo json_encode(array(
-    'status' => 'success',
-    'message' => "Книга успешно добавлена: Юзер $id_user, Фото: $photo_book_db, Дата: $date_read, Файл: $file_book_db, Разрешение: $allow_download"
-));
+if ($addBook) {
+    header("Location: /lib/view/books.php"); 
+
+
+
+}
 ?>
