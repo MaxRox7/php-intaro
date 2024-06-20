@@ -16,7 +16,7 @@ if(isset($_POST["submit-reg"])) {
     $signup->checkReg();
 
     $userDataString = json_encode(array('status' => 'success', 'user' => "Красава"));
-    header('Content-Type: application/json');
+    header("Location: /lib");
     echo $userDataString;
     exit();
 } else {

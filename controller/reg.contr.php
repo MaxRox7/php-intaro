@@ -43,7 +43,7 @@ class RegContr extends SignUp {
     }
 
     private function checkLogin() {
-        return !$this->checkUser($this->login, $this->password);
+        return $this->checkUser($this->login, $this->password);
     }
 }
 ?>

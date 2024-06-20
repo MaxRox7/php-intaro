@@ -95,7 +95,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <a href="<?php echo htmlspecialchars('../files/' . $book['file_book']); ?>" class="download-link">Скачать</a>
                                 <?php endif; ?>
                                 <?php if (isset($_SESSION['user']['id_user'])): ?>
-                                    <a href="#" class="edit-link">Редактировать</a>
+                                    <a href="update_book.php?id_book=<?php echo htmlspecialchars($book['id_book']); ?>" class="edit-link">Редактировать</a>
                                     <form action="../core/delete_book.php" method="post" style="display: inline;">
                                             <input type="hidden" name="id_book" value="<?php echo htmlspecialchars($book['id_book']); ?>">
                                             <button type="submit" name="submit-delete" class="btn red">Удалить</button>
